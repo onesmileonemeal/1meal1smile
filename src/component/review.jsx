@@ -37,7 +37,7 @@ const Reviews = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/final.jpg')" }} // Ensure the image is in the public folder
     >
-      <div className="max-w-4xl mx-auto px-6 py-12 mt-20 bg-white bg-opacity-90 shadow-lg rounded-2xl">
+      <div className="max-w-4xl mx-auto px-6 py-12 mt-20  shadow-lg rounded-2xl">
         <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-6">
           User Reviews
         </h1>
