@@ -19,6 +19,9 @@ import { db } from "../../../../firebaseConfig";
 // Colors for charts
 const COLORS = ["#00C49F", "#FFBB28", "#0088FE", "#FF8042", "#8884d8"]; // Adjusted order for status
 
+// Define the conversion rate: 1kg of food feeds 3 people
+const FOOD_TO_PEOPLE_RATIO = 3;
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
@@ -63,10 +66,9 @@ const Dashboard = () => {
       (sum, d) => sum + (Number(d.foodWeight) || 0),
       0
     );
-    const peopleFed = donations.reduce(
-      (sum, d) => sum + (Number(d.peopleFed) || 0),
-      0
-    );
+    
+    // Calculate people fed based on the food weight and the ratio (1kg feeds 3 people)
+    const peopleFed = Math.floor(totalFoodWeight * FOOD_TO_PEOPLE_RATIO);
 
     const statusData = [
       { name: "Accepted", value: acceptedDonations, fill: COLORS[0] },
@@ -248,6 +250,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">People Fed</p>
+                  <p className="text-xs text-gray-400">1kg feeds 3 people</p>
                   <h3 className="text-2xl font-bold">
                     {stats.peopleFed > 0
                       ? stats.peopleFed.toLocaleString()
@@ -411,6 +414,9 @@ const Dashboard = () => {
                       Weight (kg)
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      People Fed
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -427,6 +433,9 @@ const Dashboard = () => {
                       const donor = donation.userId
                         ? donorMap.get(donation.userId)
                         : null;
+                      const weight = Number(donation.foodWeight) || 0;
+                      const peopleFedByDonation = Math.floor(weight * FOOD_TO_PEOPLE_RATIO);
+                      
                       return (
                         <tr
                           key={donation.id}
@@ -439,9 +448,12 @@ const Dashboard = () => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-500">
-                              {(
-                                Number(donation.foodWeight) || 0
-                              ).toLocaleString()}
+                              {weight.toLocaleString()}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">
+                              {peopleFedByDonation.toLocaleString()}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -494,7 +506,7 @@ const Dashboard = () => {
                   ) : (
                     <tr>
                       <td
-                        colSpan="5"
+                        colSpan="6"
                         className="text-center py-4 text-gray-500 italic"
                       >
                         No donations found matching the criteria.
