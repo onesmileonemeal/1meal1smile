@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div
       style={{
-        backgroundImage: "url('/bg1.jpg')",
+        backgroundImage: "url('/final.jpg')",
         backgroundSize: "cover", // Adjust as needed: cover, contain, etc.
         backgroundRepeat: "no-repeat",
         minHeight: "100vh", // Ensures the background covers the entire viewport height

@@ -33,29 +33,34 @@ const Reviews = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 mt-20 bg-white shadow-lg rounded-2xl">
-      <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-6">
-        User Reviews
-      </h1>
-      <div className="grid md:grid-cols-2 gap-6">
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            className="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-lg transition duration-300"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-gray-800">
-                {review.user}
-              </h2>
-              <div className="flex">
-                {Array.from({ length: review.rating }).map((_, index) => (
-                  <FaStar key={index} className="text-yellow-500" />
-                ))}
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: "url('/final.jpg')" }} // Ensure the image is in the public folder
+    >
+      <div className="max-w-4xl mx-auto px-6 py-12 mt-20 bg-white bg-opacity-90 shadow-lg rounded-2xl">
+        <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-6">
+          User Reviews
+        </h1>
+        <div className="grid md:grid-cols-2 gap-6">
+          {reviews.map((review) => (
+            <div
+              key={review.id}
+              className="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {review.user}
+                </h2>
+                <div className="flex">
+                  {Array.from({ length: review.rating }).map((_, index) => (
+                    <FaStar key={index} className="text-yellow-500" />
+                  ))}
+                </div>
               </div>
+              <p className="text-gray-700">{review.comment}</p>
             </div>
-            <p className="text-gray-700">{review.comment}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
