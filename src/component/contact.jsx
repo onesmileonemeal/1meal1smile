@@ -4,7 +4,7 @@ import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 const Contact = () => {
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      className="min-h-screen flex items-center justify-center bg-cover bg-white bg-center"
       style={{ backgroundImage: "url('/final.jpg')" }}
     >
       <div className="max-w-4xl mx-auto px-6 py-12 mt-20 -80 shadow-lg rounded-2xl">
