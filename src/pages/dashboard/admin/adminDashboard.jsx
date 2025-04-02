@@ -25,8 +25,10 @@ const FOOD_TO_PEOPLE_RATIO = 3;
 // Static authorized users
 const AUTHORIZED_USERS = [
   { email: "dhoranyogesh500@gmail.com", password: "Yogesh@8848" },
-  { email: "manager@foodbank.org", password: "manager456" },
-  { email: "volunteer@foodbank.org", password: "volunteer789" }
+  { email: "atharvnangare2065@gmail.com ", password: "Atharv@123" },
+  { email: "zoreraj099@gmail.com", password: "Raj@123" },
+  {email:"sanjyotkhandave41@gmail.com",password:"Sanjyot@123"},
+  {email:"devsurve1625@gmail.com",password:"Devvrat@123"}
 ];
 
 const Dashboard = () => {
