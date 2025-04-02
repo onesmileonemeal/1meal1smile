@@ -1,8 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import foodWasteImage from "/foodwaste.jpg";
 import hungryChildrenImage from "/hungryChildrenImage.jpg";
 
 const About = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-cover bg-center py-16" style={{ backgroundImage: `url('/bg.jpg')` }}>
       <div className="container mx-auto px-4 max-w-6xl">
@@ -80,10 +83,16 @@ const About = () => {
         <div className="text-center bg-white bg-opacity-90 rounded-lg p-8 shadow-lg">
           <h2 className="text-3xl font-bold text-green-800 mb-6">Ready to Make a Difference?</h2>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+            <button 
+              onClick={() => navigate('/auth/signup')} 
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition duration-300"
+            >
               Donate Food
             </button>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+            <button 
+              onClick={() => navigate('/auth/signup')} 
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300"
+            >
               Volunteer
             </button>
           </div>
