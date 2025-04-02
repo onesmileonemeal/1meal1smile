@@ -1,11 +1,13 @@
 import React from "react";
+import foodWasteImage from "/foodwaste.jpg";
+import hungryChildrenImage from "/hungryChildrenImage.jpg";
 
 const About = () => {
   return (
-    <section className="bg-gradient-to-b from-white to-green-50 py-16">
+    <section className="bg-cover bg-center py-16" style={{ backgroundImage: `url('/bg-image.jpg')` }}>
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 bg-white bg-opacity-90 rounded-lg p-8 shadow-lg">
           <h1 className="text-4xl md:text-5xl font-bold text-green-800 mb-4">About OneMealOneSmile</h1>
           <div className="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
@@ -19,7 +21,7 @@ const About = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full transform transition duration-300 hover:scale-105">
             <div className="h-64 overflow-hidden">
               <img 
-                src="/api/placeholder/600/400" 
+                src={foodWasteImage}
                 alt="Food waste that could be rescued" 
                 className="w-full h-full object-cover"
               />
@@ -39,7 +41,7 @@ const About = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full transform transition duration-300 hover:scale-105">
             <div className="h-64 overflow-hidden">
               <img 
-                src="/api/placeholder/600/400" 
+                src={hungryChildrenImage}
                 alt="Children receiving nutritious meals" 
                 className="w-full h-full object-cover"
               />
@@ -75,7 +77,7 @@ const About = () => {
         </div>
 
         {/* Call to action */}
-        <div className="text-center">
+        <div className="text-center bg-white bg-opacity-90 rounded-lg p-8 shadow-lg">
           <h2 className="text-3xl font-bold text-green-800 mb-6">Ready to Make a Difference?</h2>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition duration-300">
