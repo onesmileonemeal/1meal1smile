@@ -4,7 +4,7 @@ import hungryChildrenImage from "/hungryChildrenImage.jpg";
 
 const About = () => {
   return (
-    <section className="bg-cover bg-center py-16" style={{ backgroundImage: `url('/bg-image.jpg')` }}>
+    <section className="bg-cover bg-center py-16" style={{ backgroundImage: `url('/bg.jpg')` }}>
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-16 bg-white bg-opacity-90 rounded-lg p-8 shadow-lg">
