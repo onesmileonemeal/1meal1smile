@@ -12,7 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Users, ShoppingBag, Clock, Award, AlertCircle } from "lucide-react";
+import { Users, ShoppingBag, Clock, Award, AlertCircle, Lock, Mail } from "lucide-react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { db } from "../../../../firebaseConfig";
 
@@ -22,7 +22,18 @@ const COLORS = ["#00C49F", "#FFBB28", "#0088FE", "#FF8042", "#8884d8"]; // Adjus
 // Define the conversion rate: 1kg of food feeds 3 people
 const FOOD_TO_PEOPLE_RATIO = 3;
 
+// Static authorized users
+const AUTHORIZED_USERS = [
+  { email: "dhoranyogesh500@gmail.com", password: "Yogesh@8848" },
+  { email: "manager@foodbank.org", password: "manager456" },
+  { email: "volunteer@foodbank.org", password: "volunteer789" }
+];
+
 const Dashboard = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,6 +43,47 @@ const Dashboard = () => {
     volunteers: [],
   });
   const [donationStatusFilter, setDonationStatusFilter] = useState("all");
+
+  // Check if user credentials are saved in localStorage
+  useEffect(() => {
+    const savedAuth = localStorage.getItem("dashboardAuth");
+    if (savedAuth) {
+      try {
+        const { email, isAuth } = JSON.parse(savedAuth);
+        // Verify if the email exists in authorized users
+        const userExists = AUTHORIZED_USERS.some(user => user.email === email);
+        if (isAuth && userExists) {
+          setIsAuthenticated(true);
+          setEmail(email);
+        }
+      } catch (e) {
+        localStorage.removeItem("dashboardAuth");
+      }
+    }
+  }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setAuthError("");
+
+    const user = AUTHORIZED_USERS.find(
+      user => user.email === email && user.password === password
+    );
+
+    if (user) {
+      setIsAuthenticated(true);
+      localStorage.setItem("dashboardAuth", JSON.stringify({ email, isAuth: true }));
+    } else {
+      setAuthError("Invalid email or password");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setEmail("");
+    setPassword("");
+    localStorage.removeItem("dashboardAuth");
+  };
 
   const stats = useMemo(() => {
     if (
@@ -138,6 +190,8 @@ const Dashboard = () => {
   }, [rawData.donations, donationStatusFilter]);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+    
     async function fetchData() {
       try {
         setLoading(true);
@@ -178,7 +232,78 @@ const Dashboard = () => {
     }
 
     fetchData();
-  }, []);
+  }, [isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+          <div className="flex justify-center mb-6">
+            <div className="bg-blue-600 rounded-full p-3">
+              <Lock className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Admin Dashboard Login</h2>
+          
+          {authError && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 relative">
+              <span className="block sm:inline">{authError}</span>
+            </div>
+          )}
+          
+          <form onSubmit={handleLogin}>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                Email
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="admin@foodbank.org"
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-10 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                type="submit"
+              >
+                Sign In
+              </button>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -207,10 +332,23 @@ const Dashboard = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <header className="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
-        <h1 className="text-2xl font-bold">Organization Dashboard</h1>
-        <p className="text-sm mt-1 opacity-90">
-          Overview of donations, donors, and volunteers
-        </p>
+        <div className="container mx-auto flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold">Organization Dashboard</h1>
+            <p className="text-sm mt-1 opacity-90">
+              Overview of donations, donors, and volunteers
+            </p>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-3 text-sm">{email}</span>
+            <button 
+              onClick={handleLogout}
+              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-1 rounded-md text-sm transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </header>
 
       <div className="bg-white shadow-sm sticky top-[76px] z-10">
@@ -593,6 +731,7 @@ const Dashboard = () => {
                                 : "?"}
                             </span>
                           </div>
+
                           <div className="ml-4 min-w-0">
                             <div className="text-sm font-medium text-gray-900 truncate">
                               {volunteer.name || "Unnamed Volunteer"}

@@ -53,11 +53,11 @@ const HeroSection = () => {
       className="min-h-screen flex flex-col md:flex-row items-center justify-between px-8 py-20 bg-transparent"
     >
       {/* Left Side Text */}
-      <div ref={textRef} className="md:w-1/2 text-gray-900">
+      <div ref={textRef} className="md:w-1/2 text-white">
         <h1 className="text-4xl font-bold mb-4">
           Donate Food, Share Smiles! 🍽️
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-white">
           Help reduce food waste and feed those in need. Every meal you donate
           brings hope to someone. Join us in making a difference!
         </p>
@@ -68,8 +68,12 @@ const HeroSection = () => {
         ref={imageRef}
         className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0"
       >
-        <div className=" aspect-square rounded-2xl flex items-center justify-center shadow-md">
-          <img src={foodPlate} alt="Food Donation" className="w-3/4 h-3/4" />
+        <div className="aspect-square rounded-2xl flex items-center justify-center shadow-md p-4">
+          <img
+            src={foodPlate}
+            alt="Food Donation"
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto"
+          />
         </div>
       </div>
     </section>
